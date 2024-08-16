@@ -1,1 +1,1 @@
-export const ProscrapeURL = process.env.NEXT_PUBLIC_API_URL;
+export const ProscrapeURL = "https://academia-pro.vercel.app";
