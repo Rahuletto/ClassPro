@@ -30,7 +30,7 @@ export default forwardRef<HTMLButtonElement, {anchor: boolean}>(function Install
         <GrInstallOption
           className={`text-xl text-light-color transition-all duration-75 dark:text-dark-color`}
         />
-        {anchor && <p className="m-0 hidden font-semibold lg:block">Install</p>}
+        {anchor && <p className="m-0 hidden font-semibold lg:block text-light-color dark:text-dark-color">Install</p>}
       </button>
       </>
     )
