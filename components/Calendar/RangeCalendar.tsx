@@ -28,9 +28,7 @@ export function LeaveODRangeCalendar({
     from: Date | undefined;
     to: Date | undefined;
   }>({ from: undefined, to: undefined });
-  // const [categorizedRanges, setCategorizedRanges] = React.useState<
-  //   CategorizedDateRange[]
-  // >([]);
+
   const { calendar } = usePlanner();
 
   const handleSelect = (value: any) => {
@@ -85,13 +83,31 @@ export function LeaveODRangeCalendar({
   return (
     <div className="flex w-full flex-col gap-4 rounded-xl bg-light-background-light dark:bg-dark-background-dark">
       <div className="flex w-full flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 lg:max-w-[50%]">
+        <div className="w-full lg:w-1/2 flex flex-col items-center justify-between lg:max-w-[50%]">
           <Calendar
             mode="range"
             selected={dateRange}
             onSelect={handleSelect}
             className="w-full rounded-xl"
             modifiers={{
+              leaveEnds: (date) =>
+                categorizedRanges.some(
+                  (range) =>
+                    (format(date, "yyyy-MM-dd") ===
+                      format(range.from, "yyyy-MM-dd") ||
+                      format(date, "yyyy-MM-dd") ===
+                        format(range.to, "yyyy-MM-dd")) &&
+                    range.category === "Leave",
+                ),
+              odEnds: (date) =>
+                categorizedRanges.some(
+                  (range) =>
+                    (format(date, "yyyy-MM-dd") ===
+                      format(range.from, "yyyy-MM-dd") ||
+                      format(date, "yyyy-MM-dd") ===
+                        format(range.to, "yyyy-MM-dd")) &&
+                    range.category === "OD",
+                ),
               holidays: (date) => {
                 const monthIndex =
                   calendar?.findIndex((month) =>
@@ -119,12 +135,40 @@ export function LeaveODRangeCalendar({
                       end: range.to,
                     }) && range.category === "OD",
                 ),
+              presented: (date) => {
+                const leaveRanges = categorizedRanges
+                  .filter(
+                    (range) =>
+                      range.category === "Leave" || range.category === "OD",
+                  )
+                  .sort((a, b) => a.from.getTime() - b.from.getTime());
+
+                if (leaveRanges.length === 0) return false;
+
+                const lastLeave = leaveRanges[leaveRanges.length - 1];
+                return (
+                  date >= today &&
+                  date < lastLeave.to &&
+                  !leaveRanges.some((range) =>
+                    isWithinInterval(date, {
+                      start: range.from,
+                      end: range.to,
+                    }),
+                  )
+                );
+              },
             }}
             modifiersClassNames={{
               holidays:
-                "!text-light-error-color dark:!text-dark-error-color !opacity-60 cursor-not-allowed !bg-transparent dark:!bg-transparent",
-              leave: `bg-light-error-color dark:bg-dark-error-color text-black hover:bg-light-error-background dark:hover:bg-dark-error-background hover:text-light-error-color dark:hover:text-dark-error-color`,
-              od: "bg-light-success-color dark:bg-dark-success-color text-black hover:bg-light-success-background dark:hover:bg-dark-success-background hover:text-light-success-color dark:hover:text-dark-success-color",
+                "!text-light-error-color dark:!text-dark-error-color !opacity-60 !bg-transparent !dark:bg-transparent cursor-not-allowed",
+              leaveEnds: `bg-light-error-color dark:bg-dark-error-color !text-black hover:bg-light-error-background !dark:hover:bg-dark-error-background hover:text-light-error-color dark:hover:text-dark-error-color !rounded-md`,
+              odEnds:
+                "bg-light-info-color dark:bg-dark-info-color !text-black hover:bg-light-info-background dark:hover:bg-dark-info-background hover:text-light-info-color dark:hover:text-dark-info-color !rounded-md",
+              leave:
+                "bg-light-error-background dark:bg-dark-error-background rounded-none text-light-error-color dark:text-dark-error-color",
+              od: "bg-light-info-background dark:bg-dark-info-background rounded-none text-light-info-color dark:text-dark-info-color",
+              presented:
+                "bg-light-success-background/70 dark:bg-dark-success-background/70 rounded-sm",
             }}
             disabled={[
               (date) =>
@@ -153,6 +197,23 @@ export function LeaveODRangeCalendar({
             ]}
             fromDate={today}
           />
+          <div className="flex flex-row gap-3 p-1 items-center justify-center">
+            <div className="flex items-center justify-center gap-2 rounded-md bg-light-error-background font-mono text-xs text-light-error-color dark:bg-dark-error-background dark:text-dark-error-color">
+              <div className="h-4 w-4 rounded-md bg-light-error-color dark:bg-dark-error-color" />
+              A
+              <div className="h-4 w-4 rounded-md bg-light-error-color dark:bg-dark-error-color" />
+            </div>
+
+            {/* <div className="flex items-center justify-center gap-2 rounded-md bg-light-info-background font-mono text-xs text-light-info-color dark:bg-dark-info-background dark:text-dark-info-color">
+              <div className="h-4 w-4 rounded-md bg-light-info-color dark:bg-dark-info-color" />
+              OD
+              <div className="h-4 w-4 rounded-md bg-light-info-color dark:bg-dark-info-color" />
+            </div> */}
+
+            <div className="flex items-center justify-center gap-1 rounded-md px-3 bg-light-success-background/80 font-mono text-xs text-light-success-color dark:bg-dark-success-background/80 dark:text-dark-success-color">
+              P
+            </div>
+          </div>
         </div>
         <div className="w-full lg:w-1/2 lg:max-w-[50%]">
           <ScrollArea className="h-[330px] border-t border-neutral-200 p-2 md:border-l md:border-t-0 lg:h-[330px] dark:border-neutral-800">
@@ -228,7 +289,7 @@ export function LeaveODRangeCalendar({
         {/* <Button
           onClick={() => handleCategoryAdd("OD")}
           disabled={!dateRange.from || !dateRange.to}
-          className="flex-1 rounded-lg border-light-success-color bg-light-success-background font-semibold text-light-success-color hover:bg-light-success-color hover:text-dark-success-background disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-success-color dark:bg-dark-success-background dark:text-dark-success-color dark:hover:bg-dark-success-color"
+          className="flex-1 rounded-lg border-light-info-color bg-light-info-background font-semibold text-light-info-color hover:bg-light-info-color hover:text-dark-info-background disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-info-color dark:bg-dark-info-background dark:text-dark-info-color dark:hover:bg-dark-info-color"
         >
           Add as OD
         </Button> */}

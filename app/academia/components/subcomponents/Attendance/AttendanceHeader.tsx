@@ -19,37 +19,14 @@ import ODMLDatePicker from "./OD/ODMLDatePicker";
 import ODMLResetButtons from "./OD/ResetButtons";
 import Predictor from "./Predictor";
 import { createPortal } from "react-dom";
-import Button from "@/components/Button";
 import { CategorizedDateRange } from "../../../../../types/Attendance";
 
 interface AttendanceHeaderProps {
-  isPredicted: boolean;
-  isODML: boolean;
-  dateRange: DateRange;
-  setDateRange: Dispatch<SetStateAction<DateRange>>;
-  handleDateChange: (dates: DateObject[]) => void;
-  showDatePicker: boolean;
-  setShowDatePicker: Dispatch<SetStateAction<boolean>>;
-  setIsPredicted: Dispatch<SetStateAction<boolean>>;
-  setIsODML: Dispatch<SetStateAction<boolean>>;
-  ODMLdateRange: DateRange[];
-  setODMLDateRange: Dispatch<SetStateAction<DateRange[]>>;
   categorizedDateRanges: CategorizedDateRange[];
   setCategorizedDateRanges: Dispatch<SetStateAction<CategorizedDateRange[]>>;
 }
 
 export const AttendanceHeader: FC<AttendanceHeaderProps> = ({
-  isPredicted,
-  isODML,
-  dateRange,
-  setDateRange,
-  handleDateChange,
-  showDatePicker,
-  setShowDatePicker,
-  setIsPredicted,
-  ODMLdateRange,
-  setODMLDateRange,
-  setIsODML,
   categorizedDateRanges,
   setCategorizedDateRanges,
 }) => {
@@ -100,24 +77,6 @@ export const AttendanceHeader: FC<AttendanceHeaderProps> = ({
               >
                 Predict
               </button>
-              {/* {!isPredicted && (
-                <DatePickerComponent
-                  dateRange={dateRange}
-                  handleDateChange={handleDateChange}
-                />
-              )} */}
-              {/* {!isPredicted && (
-          <ODMLDatePicker
-            dateRanges={ODMLdateRange}
-            setDateRanges={setODMLDateRange}
-            isODML={isODML}
-            setIsODML={setIsODML}
-            resetODML={() => {
-              setODMLDateRange([{ from: null, to: null }]);
-              setIsODML(false);
-            }}
-          />
-        )} */}
 
               {dialogRoot &&
                 open &&
@@ -129,40 +88,6 @@ export const AttendanceHeader: FC<AttendanceHeaderProps> = ({
                   />,
                   dialogRoot,
                 )}
-              {/* {!isPredicted && dateRange.from && dateRange.to && (
-                <button
-                  onClick={() => setIsPredicted(true)}
-                  className="predict-button flex animate-fadeIn items-center rounded-full border border-light-success-color bg-light-success-background px-2 py-1 text-light-success-color dark:border-dark-success-color dark:bg-dark-success-background dark:text-dark-success-color"
-                >
-                  <FaCheck />
-                </button>
-              )} */}
-              {/* {!isODML && ODMLdateRange.some((range) => range.from && range.to) && (
-          <button
-            onClick={() => setIsODML(true)}
-            className="predict-button flex animate-fadeIn items-center rounded-full border border-light-success-color bg-light-success-background px-2 py-1 text-light-success-color dark:border-dark-success-color dark:bg-dark-success-background dark:text-dark-success-color"
-          >
-            <FaCheck />
-          </button>
-        )} */}
-              {/* 
-              <PredictResetButtons
-                isPredicted={isPredicted}
-                showDatePicker={showDatePicker}
-                setShowDatePicker={setShowDatePicker}
-                resetAttendance={() => {
-                  setDateRange({ from: null, to: null });
-                  setIsPredicted(false);
-                }}
-              /> */}
-              {/* <ODMLResetButtons
-            isODML={isODML}
-            setIsODML={setIsODML}
-            resetODML={() => {
-              setODMLDateRange([{ from: null, to: null }]);
-              setIsODML(false);
-            }}
-          /> */}
               <div className="relative" ref={infoIconRef}>
                 <FiInfo
                   className="cursor-help opacity-40"

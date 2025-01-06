@@ -22,7 +22,7 @@ export const Cookie = {
     const encodedValue = encodeURIComponent(value);
   
     const cookieString = `${name}=${encodedValue}; expires=${exdate.toUTCString()}; path=/; ${
-      window.location.hostname === 'localhost' ? '' : 'Secure; '
+      window.location?.hostname === 'localhost' ? '' : 'Secure; '
     }SameSite=Lax`;
   
     document.cookie = cookieString;

@@ -5,14 +5,16 @@ import PasswordInput from "./form/PasswordInput";
 import { Cookie as cookies } from "@/utils/Cookies";
 import rotateUrl, { revalUrl } from "@/utils/URL";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { token } from "@/utils/Tokenize";
 import { fetcher, useData } from "@/provider/DataProvider";
 import useSWR from "swr";
 
 export default function Form() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { mutate } = useSWR(`${revalUrl}/getData`);
+  const redirParam = searchParams.get("redirect") || "/academia";
 
   const [uid, setUid] = useState("");
   const [pass, setPass] = useState("");
@@ -52,12 +54,12 @@ export default function Form() {
     if (res.authenticated) {
       setError(2);
       cookies.set("key", res.cookies);
-      router.push("/academia");
+      router.push(redirParam);
     } else if (res?.message) {
       setError(1);
       setMessage(res?.message);
     }
-  }, [captcha, uid, pass, router, response]);
+  }, [captcha, uid, pass, router, response, redirParam]);
 
   const handleLogin = useCallback(async () => {
     setError(-1);
@@ -108,7 +110,10 @@ export default function Form() {
               optimisticData: data,
               revalidate: false,
               populateCache: true,
-            }).then(() => router.push("/academia"));
+            }).then(() => router.push("/academia")).catch(() => {
+              console.warn("Failed to update data.");
+              router.push("/academia");
+            })
           });
         }, 100);
       } else if (res?.message) {

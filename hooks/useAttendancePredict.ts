@@ -43,7 +43,7 @@ export const useAttendancePrediction = (
       if (!currentMonth) return;
 
       const dayInfo = currentMonth.days.find((d) => d.date === formattedDate);
-      if (!dayInfo || dayInfo?.day === "Sat" || dayInfo?.day === "Sun") return;
+      if (!dayInfo || dayInfo?.day === "Sun") return;
 
       const daySchedule = timetable.find(
         (t) => t.day === Number(dayInfo.dayOrder),
@@ -85,10 +85,10 @@ export const useAttendancePrediction = (
 
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(currentDate);
-    endDate.setFullYear(currentDate.getFullYear() + 1);
 
-    while (currentDate <= endDate) {
+    const endDate = new Date(dateRanges[0].from || "");
+
+    while (currentDate < endDate) {
       const isAbsentDay = dateRanges.some(
         (range) =>
           range.from &&
@@ -102,6 +102,20 @@ export const useAttendancePrediction = (
       processDay(currentDate, isAbsentDay);
       currentDate.setDate(currentDate.getDate() + 1);
     }
+
+    dateRanges.forEach((range) => {
+      if (range.from && range.to) {
+        let rangeStartDate = new Date(range.from);
+        rangeStartDate.setHours(0, 0, 0, 0);
+        let rangeEndDate = new Date(range.to);
+        rangeEndDate.setHours(0, 0, 0, 0);
+
+        while (rangeStartDate <= rangeEndDate) {
+          processDay(rangeStartDate, true);
+          rangeStartDate.setDate(rangeStartDate.getDate() + 1);
+        }
+      }
+    });
 
     setPredictedAttendance(updatedAttendance);
   }, [attendance, timetable, calendar, dateRanges]);

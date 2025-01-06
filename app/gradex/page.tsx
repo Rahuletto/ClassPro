@@ -8,11 +8,16 @@ import GradeCard from "./components/GradeCard";
 import Indicator from "@/components/Indicator";
 import { determineGrade } from "@/utils/Grade";
 import { getGrade } from "@/types/Grade";
+import { Mark } from "@/types/Marks";
 
 export default function GradeX() {
   const { marks, isLoading, error, courses, isValidating } = useData();
   const [grades, setGrades] = useState<{ [courseCode: string]: string }>({});
   const [sgpa, setSgpa] = useState(0);
+  const [excludedCourses, setExcludedCourses] = useState<string[]>([]);
+
+  const [theory, setTheory] = useState<Mark[]>([]);
+  const [practicals, setPracticals] = useState<Mark[]>([]);
 
   const gradePoints: { [key: string]: number } = {
     O: 10,
@@ -27,25 +32,75 @@ export default function GradeX() {
     marks?.forEach((mark) => {
       setGrades((prevGrades) => ({
         ...prevGrades,
-        [mark.courseCode]: Number(mark.overall.total) == 100 ? getGrade(Number(mark.overall.marks)) : determineGrade(
-          Number(mark.overall.total) - Number(mark.overall.marks),
-        ),
+        [mark.courseCode]:
+          Number(mark.overall.total) == 100
+            ? getGrade(Number(mark.overall.marks))
+            : determineGrade(
+                Number(mark.overall.total) - Number(mark.overall.marks),
+              ),
       }));
     });
   }, [marks]);
 
+  useEffect(() => {
+    setTheory(
+      marks
+        ?.filter((a) => a.courseType === "Theory")
+        .filter((a) =>
+          courses
+            ? (Number(courses.find((c) => c.code === a.courseCode)?.credit) ??
+                0) > 0
+            : false,
+        ) || [],
+    );
+  }, [marks, courses]);
 
+  useEffect(() => {
+    const p =
+      marks
+        ?.filter((a) => a.courseType === "Practical")
+        .filter((a) =>
+          courses
+            ? (Number(courses.find((c) => c.code === a.courseCode)?.credit) ??
+                0) > 0
+            : false,
+        )
+        .filter(
+          (practical) =>
+            !theory?.some(
+              (theory) =>
+                theory.courseType === "Theory" &&
+                theory.courseCode === practical.courseCode,
+            ),
+        ) || [];
+
+    setPracticals(p);
+  }, [theory, courses, marks]);
 
   useEffect(() => {
     sgpaCalculator();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grades, courses, marks]);
 
-  const updateGrade = (courseCode: string, grade: string) => {
+  const updateGrade = (
+    courseCode: string,
+    grade: string,
+    exclude: boolean = false,
+  ) => {
     setGrades((prevGrades) => ({
       ...prevGrades,
       [courseCode]: grade,
     }));
+
+    if (exclude) {
+      setExcludedCourses((prevExcluded) => {
+        if (prevExcluded.includes(courseCode)) {
+          return prevExcluded.filter((code) => code !== courseCode);
+        } else {
+          return [...prevExcluded, courseCode];
+        }
+      });
+    }
   };
 
   const sgpaCalculator = () => {
@@ -55,6 +110,8 @@ export default function GradeX() {
     let totalCredits = 0;
 
     Object.entries(grades).forEach(([courseCode, grade]) => {
+      if (excludedCourses.includes(courseCode)) return;
+
       const course = courses.find((c) => c.code === courseCode);
       if (course) {
         const credits = Number(course.credit);
@@ -68,32 +125,6 @@ export default function GradeX() {
     const calculatedSgpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
     setSgpa(parseFloat(calculatedSgpa.toFixed(2)));
   };
-
-  const theory = marks
-    ?.filter((a) => a.courseType === "Theory")
-    .filter((a) =>
-      courses
-        ? (Number(courses.find((c) => c.code === a.courseCode)?.credit) ?? 0) >
-          0
-        : false,
-    );
-
-  const practicals = marks
-    ?.filter((a) => a.courseType === "Practical")
-    .filter((a) =>
-      courses
-        ? (Number(courses.find((c) => c.code === a.courseCode)?.credit) ?? 0) >
-          0
-        : false,
-    )
-    .filter(
-      (practical) =>
-        !theory?.some(
-          (theory) =>
-            theory.courseType === "Theory" &&
-            theory.courseName === practical.courseName,
-        ),
-    );
 
   return (
     <main className="h-screen w-full bg-light-background-normal pb-0 text-light-color dark:bg-dark-background-normal dark:text-dark-color">
@@ -122,6 +153,7 @@ export default function GradeX() {
                     {theory?.map((mark, index) => (
                       <GradeCard
                         mark={mark}
+                        excludedCourses={excludedCourses}
                         key={index}
                         currentGrade={grades[mark.courseCode] || "O"}
                         updateGrade={updateGrade}
@@ -137,6 +169,7 @@ export default function GradeX() {
                           <GradeCard
                             mark={mark}
                             key={index}
+                            excludedCourses={excludedCourses}
                             currentGrade={grades[mark.courseCode] || "O"}
                             updateGrade={updateGrade}
                           />

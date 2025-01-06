@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-const protectedRoutes = ["/academia", "/courses", "/wrapped"];
+const protectedRoutes = ["/academia", "/courses", "/wrapped", "/auth/oauth"];
 const home = ["/"];
 const MAINTENANCE = false;
 
@@ -13,7 +13,6 @@ const isAuthenticated = (request: NextRequest): boolean => {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("key");
 
   if (MAINTENANCE && pathname !== "/maintenance") {
     return NextResponse.redirect(new URL("/maintenance", request.url));

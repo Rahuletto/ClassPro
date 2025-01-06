@@ -8,11 +8,11 @@ export const grade_points: { [key: string]: number } = {
 };
 
 export function getGrade(marks: number): string {
-  if (marks >= 91) return 'O';
-  if (marks >= 81) return 'A+';
-  if (marks >= 71) return 'A';
-  if (marks >= 61) return 'B+';
-  if (marks >= 56) return 'B';
-  if (marks >= 50) return 'C';
-  return 'F';
+  if (marks >= 91) return "O";
+  if (marks >= 81) return "A+";
+  if (marks >= 71) return "A";
+  if (marks >= 61) return "B+";
+  if (marks >= 56) return "B";
+  if (marks >= 50) return "C";
+  return "F";
 }

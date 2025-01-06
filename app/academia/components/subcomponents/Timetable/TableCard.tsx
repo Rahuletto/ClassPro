@@ -71,7 +71,7 @@ const SubjectCell: React.FC<SubjectCellProps> = ({
   return (
     <div className={baseClasses} style={style}>
       {subject && subject !== "null" ? (
-        subject.split(" – ")[0]?.split(":")[0]
+        subject.split(" – ")[0]?.split(":")[0].replace("Physical and Mental Health using ", "")
       ) : isActive ? (
         <span
           style={constructNullStyles(0, index, [], false, true)}
@@ -82,7 +82,7 @@ const SubjectCell: React.FC<SubjectCellProps> = ({
         <span
           className="absolute bottom-2 left-2 flex text-xs capitalize opacity-70 min-w-12 line-clamp-1 overflow-ellipsis"
         >
-          {classRoom.replace("Laboratory", "Lab").replace("Basic Engineering Lab", "BEL").replace("Hi-tech building","Hi-Tech").replace("main campus", "")}
+          {classRoom.replace("Laboratory", "Lab").replace("Basic Engineering Lab", "BEL").replace("Hi-tech building ,","Hi-Tech").replace("main campus", "")}
         </span>
       )}
       <span
