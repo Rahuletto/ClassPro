@@ -236,6 +236,7 @@ export const Themes = [
 	},
 	{
 		title: "Carbon Dark",
+		mono:true,
 		mode: "dark",
 		properties: {
 			metacolor: "#161616",
@@ -522,6 +523,7 @@ export const Themes = [
 	},
 	{
 		title: "Mommy Persephone",
+		mono:true,
 		mode: "dark",
 		properties: {
 			metacolor: "#2c1a2e",
