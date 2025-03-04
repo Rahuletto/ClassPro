@@ -8,6 +8,7 @@ import Fuse from 'fuse.js';
 
 interface ResourcesProps {
   folders: Folders;
+  children?: React.ReactNode; 
 }
 
 export default function Resources({ folders }: ResourcesProps) {
