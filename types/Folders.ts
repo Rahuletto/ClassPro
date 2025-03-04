@@ -6,7 +6,7 @@ export interface Folder {
   encodedPath: string
   urls: Urls
   type: string
-  children: Children[]
+  children?: Children[]
 }
 
 export interface Urls {
