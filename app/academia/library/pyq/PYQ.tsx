@@ -70,7 +70,7 @@ export default function Library({ courses, files }: { courses: Course[]; files: 
 							searchQuery.length < 1 && semester === 0
 								? "dark:bg-dark-accent bg-light-accent rounded-full text-light-background-light dark:text-dark-background-darker"
 								: "dark:bg-dark-accent/20 bg-light-accent/20 rounded-xl text-light-accent dark:text-dark-accent"
-						} transition-all px-3 py-2 min-w-32 text-base w-full disabled:opacity-20 disabled:cursor-not-allowed font-semibold`}
+						} transition-all px-3 py-2 min-w-32 text-base w-full disabled:opacity-20 disabled:cursor-not-allowed font-semibold cursor-pointer`}
 					>
 						My Papers
 					</button>
@@ -85,7 +85,7 @@ export default function Library({ courses, files }: { courses: Course[]; files: 
 								searchQuery.length < 1 && semester === i + 1
 									? "dark:bg-dark-accent bg-light-accent rounded-full text-light-background-light dark:text-dark-background-darker"
 									: "dark:bg-dark-accent/20 bg-light-accent/20 rounded-xl text-light-accent dark:text-dark-accent"
-							} transition-all duration-500 px-3 py-2 min-w-32 text-base w-full disabled:opacity-20 disabled:cursor-not-allowed font-semibold`}
+							} transition-all duration-500 px-3 py-2 min-w-32 text-base w-full disabled:opacity-20 disabled:cursor-not-allowed font-semibold cursor-pointer`}
 						>
 							Semester {i + 1}
 						</button>

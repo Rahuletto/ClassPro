@@ -15,7 +15,7 @@ export default function OpenButton({
 		<button
 			type="button"
 			name="Open navbar"
-			className={`fixed z-10 bottom-5 rounded-full p-3 lg:hidden ${isOpen ? "right-5 bg-light-error-background dark:bg-dark-error-background" : "right-5 bg-transparent"}`}
+			className={`fixed z-10 bottom-5 rounded-full p-3 lg:hidden ${isOpen ? "right-5 bg-light-error-background dark:bg-dark-error-background" : "right-5 bg-transparent"} cursor-pointer`}
 			onClick={onClick}
 		>
 			{isOpen ? (
@@ -28,7 +28,7 @@ export default function OpenButton({
 		<button
 			type="button"
 			name="Open navbar"
-			className={`fixed bottom-20 hidden rounded-full p-3 lg:block ${anchor ? "right-5 bg-light-error-background dark:bg-dark-error-background" : "right-7 bg-transparent"}`}
+			className={`fixed bottom-20 hidden rounded-full p-3 lg:block ${anchor ? "right-5 bg-light-error-background dark:bg-dark-error-background" : "right-7 bg-transparent"} cursor-pointer`}
 			onClick={onClick}
 		>
 			<FaAnglesLeft

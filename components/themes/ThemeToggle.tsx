@@ -40,7 +40,7 @@ export default function ThemeToggle({
 						onClick={handleButtonClick}
 						title="Toggle Theme (Ctrl+Shift+P)"
 						className={
-							"text-md rounded-full p-2 opacity-60 transition duration-150 text-light-color dark:text-dark-color hover:bg-light-background-dark active:-rotate-45 dark:hover:bg-dark-background-dark"
+							"text-md rounded-full p-2 opacity-60 transition duration-150 text-light-color dark:text-dark-color hover:bg-light-background-dark active:-rotate-45 dark:hover:bg-dark-background-dark cursor-pointer"
 						}
 					>
 						<BiBrush className="text-lg" />
