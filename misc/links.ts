@@ -162,6 +162,12 @@ export const urls: DirLink[] = [
 		description: "Connect to campus WiFi.",
 	},
 	{
+		site: "Hostel Wifi",
+		url: "https://iach.srmist.edu.in/Connect/PortalMain",
+		type: "official",
+		description: "Connect to hostel WiFi.",
+	},
+	{
 		site: "Service desk",
 		url: "https://itkmservicedesk.srmist.edu.in/",
 		type: "official",
