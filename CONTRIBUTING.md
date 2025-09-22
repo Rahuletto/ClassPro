@@ -35,6 +35,8 @@ When adding new URLs to the collection:
 
 ## Theming
 
+visit ClassPro/frontend/misc/theme.ts to make changes
+
 When creating or modifying themes:
 
 1. Theme Structure
