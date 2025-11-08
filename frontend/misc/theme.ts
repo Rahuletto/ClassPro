@@ -495,6 +495,32 @@ export const Themes = [
 		},
 	},
 	{
+  		"title": "Espresso Butter",
+  		"mode": "dark",
+  		"properties": {
+    		"metacolor": "62 39 35",                // espresso
+    		"background-normal": "38 26 24",        // slightly darker espresso
+    		"background-light": "72 48 44",         // softened brown
+    		"background-dark": "28 18 16",          // near black espresso
+    		"background-darker": "18 12 10",        // darkest roast
+    		"input": "255 255 255/0.05",            // subtle input background
+    		"button": "84 56 50",                   // mid brown
+    		"side": "50 32 28",                     // side panel
+    		"accent": "255 237 172",                // butter highlight
+    		"color": "255 248 230",                 // readable text cream
+    		"error-background": "64 24 24",         // deep red-brown
+    		"error-color": "220 80 80",             // warm error red
+    		"warn-background": "70 60 40",          // toasted brown-yellow
+    		"warn-color": "255 210 100",            // butter-golden warning
+    		"success-background": "28 42 34",       // earthy green-brown
+    		"success-color": "140 200 120",         // fresh herb green
+    		"info-background": "32 36 48",          // espresso with slate hint
+    		"info-color": "160 200 255",            // cool info blue
+    		"theory": "242 216 105",                // carry over
+    		"practical": "105 224 105"              // carry over
+  		}
+	},
+	{
 		title: "Han Sooyoung",
 		mode: "dark",
 		properties: {
