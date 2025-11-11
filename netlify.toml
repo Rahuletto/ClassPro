@@ -1,5 +1,5 @@
 [build]
-  command = "cd frontend && bun install && bun run build"
+  command = "cd frontend && bun run build"
   publish = "frontend/.next"
 
 [build.environment]
@@ -9,7 +9,7 @@
 [dev]
   command = "cd frontend && bun run dev"
   port = 3000
-  targetPort = 3000
+  targetPort = 0243
 
 [[redirects]]
   from = "/elab"
