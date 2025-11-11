@@ -3,14 +3,17 @@
   command = "bun install && bun run build"
   publish = ".next"
 
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 [build.environment]
   NODE_VERSION = "22"
   BUN_VERSION = "1.1.38"
 
 [dev]
-  command = "cd frontend && bun run dev"
+  command = "bun run dev"
   port = 3000
-  targetPort = 0243
+  targetPort = 3000
 
 [[redirects]]
   from = "/elab"
