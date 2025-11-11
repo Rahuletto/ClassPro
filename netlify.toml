@@ -1,6 +1,7 @@
 [build]
-  command = "cd frontend && bun run build"
-  publish = "frontend/.next"
+  base = "frontend"
+  command = "bun install && bun run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "22"
