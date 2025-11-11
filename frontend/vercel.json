@@ -1,0 +1,88 @@
+{
+	"buildCommand": "bun run build",
+	"outputDirectory": ".next",
+	"installCommand": "bun install",
+	"regions": ["bom1"],
+	"cleanUrls": true,
+	"framework": "nextjs",
+	"functions": {
+	  "app/api/*/route.{js,ts}": {
+		"maxDuration": 10
+	  },
+	  "app/**/route.{js,ts}": {
+		"maxDuration": 10
+	  }
+	},
+	"headers": [
+	  {
+		"source": "/(.*)",
+		"headers": [
+		  {
+			"key": "Cache-Control",
+			"value": "public, max-age=3600, stale-while-revalidate=86400"
+		  }
+		]
+	  },
+	  {
+		"source": "/api/(.*)",
+		"headers": [
+		  {
+			"key": "Cache-Control",
+			"value": "public, max-age=300, stale-while-revalidate=600"
+		  }
+		]
+	  }
+	],
+	"redirects": [
+	  {
+		"source": "/courses",
+		"destination": "https://class-pro.vercel.app/academia/courses",
+		"permanent": true
+	  },
+	  {
+		"source": "/calendar",
+		"destination": "https://class-pro.vercel.app/academia/calendar",
+		"permanent": true
+	  },
+	  {
+		"source": "/elab",
+		"destination": "https://better-lab.vercel.app",
+		"permanent": true
+	  },
+	  {
+		"source": "/papers",
+		"destination": "https://docu-pro.vercel.app",
+		"permanent": true
+	  },
+	  {
+		"source": "/map",
+		"destination": "https://d23qowwaqkh3fj.cloudfront.net/wp-content/uploads/2022/06/srmist-ktr-campus-layout.jpg",
+		"permanent": true
+	  },
+	  {
+		"source": "/ssr",
+		"destination": "https://academia.srmist.edu.in/#Form:Student_Service_Requests_SSR",
+		"permanent": true
+	  },
+	  {
+		"source": "/leave",
+		"destination": "http://10.1.105.62/srmleaveapp",
+		"permanent": true
+	  },
+	  {
+		"source": "/github",
+		"destination": "https://github.com/rahuletto/classpro",
+		"permanent": true
+	  },
+	  {
+		"source": "/instagram",
+		"destination": "https://www.instagram.com/srm_academiapro/",
+		"permanent": true
+	  },
+	  {
+		"source": "/whatsapp",
+		"destination": "https://chat.whatsapp.com/FLvHgGU87OLEOeQIqJEhto",
+		"permanent": true
+	  }
+	]
+  }
