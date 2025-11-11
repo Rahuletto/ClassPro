@@ -7,10 +7,10 @@
 	"cleanUrls": true,
 	"framework": "nextjs",
 	"functions": {
-		"frontend/app/api/*/route.{js,ts,tsx}": {
+		"app/api/*/route.{js,ts,tsx}": {
 			"maxDuration": 10
 		},
-		"frontend/app/**/route.{js,ts,tsx}": {
+		"app/**/route.{js,ts,tsx}": {
 			"maxDuration": 10
 		}
 	},
