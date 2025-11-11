@@ -91,37 +91,37 @@ export default async function RootLayout({
 	children: ReactNode;
 }>) {
 	return (
-		<ViewTransitions>
-			<html
-				lang="en"
-				className={`dark h-screen bg-light-background-normal dark:bg-dark-background-normal ${GeistSans.variable} ${GeistMono.variable}`}
-			>
-				<ErrorBoundary>
-					<ThemeProvider>
-						<meta name="apple-mobile-web-app-title" content="ClassPro" />
-						<meta
-							name="theme-color"
-							media="(prefers-color-scheme: dark)"
-							content={
-								Themes.find((t) => t.title === "Dark")?.properties.metacolor
-							}
-						/>
-						<meta
-							name="theme-color"
-							media="(prefers-color-scheme: light)"
-							content={
-								Themes.find((t) => t.title === "Light")?.properties.metacolor
-							}
-						/>
+		<html
+			lang="en"
+			className={`dark h-screen bg-light-background-normal dark:bg-dark-background-normal ${GeistSans.variable} ${GeistMono.variable}`}
+		>
+			<ErrorBoundary>
+				<ThemeProvider>
+					<meta name="apple-mobile-web-app-title" content="ClassPro" />
+					<meta
+						name="theme-color"
+						media="(prefers-color-scheme: dark)"
+						content={
+							Themes.find((t) => t.title === "Dark")?.properties.metacolor
+						}
+					/>
+					<meta
+						name="theme-color"
+						media="(prefers-color-scheme: light)"
+						content={
+							Themes.find((t) => t.title === "Light")?.properties.metacolor
+						}
+					/>
 
-						<meta
-							name="theme-color"
-							content={
-								Themes.find((t) => t.title === "Dark")?.properties.metacolor
-							}
-						/>
+					<meta
+						name="theme-color"
+						content={
+							Themes.find((t) => t.title === "Dark")?.properties.metacolor
+						}
+					/>
 
-						<body className="h-screen">
+					<body className="h-screen">
+						<ViewTransitions>
 							<Script
 								defer
 								src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -130,10 +130,10 @@ export default async function RootLayout({
 							/>
 
 							{children}
-						</body>
-					</ThemeProvider>
-				</ErrorBoundary>
-			</html>
-		</ViewTransitions>
+						</ViewTransitions>
+					</body>
+				</ThemeProvider>
+			</ErrorBoundary>
+		</html>
 	);
 }
