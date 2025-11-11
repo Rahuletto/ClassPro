@@ -1,17 +1,16 @@
 {
-	"rootDirectory": "frontend",
-	"buildCommand": "bun install && bun run build",
-	"outputDirectory": ".next",
+	"buildCommand": "cd frontend && bun install && bun run build",
+	"outputDirectory": "frontend/.next",
 	"regions": [
 		"bom1"
 	],
 	"cleanUrls": true,
 	"framework": "nextjs",
 	"functions": {
-		"app/api/*/route.{js,ts,tsx}": {
+		"frontend/app/api/*/route.{js,ts,tsx}": {
 			"maxDuration": 10
 		},
-		"app/**/route.{js,ts,tsx}": {
+		"frontend/app/**/route.{js,ts,tsx}": {
 			"maxDuration": 10
 		}
 	},
