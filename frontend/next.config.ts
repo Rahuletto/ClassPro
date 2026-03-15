@@ -22,19 +22,14 @@ const withSerwist = withSerwistInit({
 const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	compress: true,
-	eslint: { ignoreDuringBuilds: true },
 	images: {
 		formats: ['image/webp', 'image/avif'],
 		minimumCacheTTL: 7200,
 	},
 	output: 'standalone',
-	webpack(config) {
-
-		
-		return config;
-	},
+	reactCompiler: true,
+	turbopack: {},
 	experimental: {
-		reactCompiler: true,
 		nextScriptWorkers: true,
 		viewTransition: true,
 		staticGenerationMaxConcurrency: 8,
