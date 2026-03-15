@@ -46,50 +46,65 @@ export default function Form() {
 			body.cdigest = cdigestValue;
 		}
 
-		const login = await fetch(`${rotateUrl()}/login`, {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token()}`,
-				"content-type": "application/json",
-			},
-			body: JSON.stringify(body),
-		});
+		try {
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
-		if (!login.ok) {
-			setStatus(-1);
-			setMessage("Server down.");
-			return;
-		}
+			const login = await fetch(`${rotateUrl()}/login`, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token()}`,
+					"content-type": "application/json",
+				},
+				body: JSON.stringify(body),
+				signal: controller.signal,
+			});
 
-		const loginResponse = await login.json();
+			clearTimeout(timeoutId);
 
-		if (loginResponse.authenticated) {
-			setStatus(2);
-			setMessage("Loading data...");
-			if(!loginResponse.cookies) {
+			if (!login.ok) {
 				setStatus(-1);
-				setMessage("No cookies received. Wrong password.");
+				setMessage("Server down.");
 				return;
 			}
-			setCookie("key", loginResponse.cookies);
-			
-			setCaptchaImage(null);
-			setCdigest(null);
-			setCaptchaInput("");
-			
-			router.push("/academia");
-		} else if (loginResponse?.captcha) {
-			setStatus(0);
-			setCaptchaImage(loginResponse.captcha.image);
-			setCdigest(loginResponse.captcha.cdigest);
-			setMessage(loginResponse.message || "Please enter the CAPTCHA.");
-		} else if (loginResponse?.message) {
+
+			const loginResponse = await login.json();
+
+			if (loginResponse.authenticated) {
+				setStatus(2);
+				setMessage("Loading data...");
+				if(!loginResponse.cookies) {
+					setStatus(-1);
+					setMessage("No cookies received. Wrong password.");
+					return;
+				}
+				setCookie("key", loginResponse.cookies);
+				
+				setCaptchaImage(null);
+				setCdigest(null);
+				setCaptchaInput("");
+				
+				router.push("/academia");
+			} else if (loginResponse?.captcha) {
+				setStatus(0);
+				setCaptchaImage(loginResponse.captcha.image);
+				setCdigest(loginResponse.captcha.cdigest);
+				setMessage(loginResponse.message || "Please enter the CAPTCHA.");
+			} else if (loginResponse?.message) {
+				setStatus(-1);
+				if (loginResponse.message?.includes("Digest"))
+					setMessage(
+						"Seems like this is your first time. Go to academia.srmist.edu.in and setup password!",
+					);
+				else setMessage(loginResponse?.message);
+			}
+		} catch (error) {
 			setStatus(-1);
-			if (loginResponse.message?.includes("Digest"))
-				setMessage(
-					"Seems like this is your first time. Go to academia.srmist.edu.in and setup password!",
-				);
-			else setMessage(loginResponse?.message);
+			if (error instanceof Error && error.name === 'AbortError') {
+				setMessage("Login request timed out. Please try again.");
+			} else {
+				setMessage(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			}
 		}
 	}, [router]);
 
