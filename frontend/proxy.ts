@@ -16,7 +16,7 @@ const isAuthenticated = (request: NextRequest): boolean => {
     return !!token?.value;
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
 	if (MAINTENANCE && pathname !== "/maintenance") {
