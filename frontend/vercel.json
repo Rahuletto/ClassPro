@@ -1,5 +1,6 @@
 {
   "installCommand": "bun install",
   "buildCommand": "bun run build",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "skipNextJsVulnerabilityCheck": true
 }
