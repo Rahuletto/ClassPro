@@ -3,23 +3,24 @@ import rotateUrl from "@/utils/URL";
 import { cookies } from "next/headers";
 
 export async function DELETE() {
-	const cookie = await cookies();
+	const cookieStore = await cookies();
+	const keyValue = cookieStore.get("key")?.value ?? "";
 
 	const a = await fetch(`${rotateUrl()}/logout`, {
 		method: "DELETE",
 		headers: {
-			cookie: `${cookie.get("key")?.value ?? ""}`,
 			Authorization: `Bearer ${token()}`,
-			"X-CSRF-Token": cookie.get("key")?.value ?? "",
-			Origin: "https://class-pro.vercel.app",
+			"X-CSRF-Token": keyValue,
 		},
 	});
 
-	if (a.ok) {
-		for (const c of cookie.getAll()) {
-			cookie.delete(c);
-		}
-		return Response.json({ message: "Logged out" });
+	// Clear all cookies regardless of backend response
+	for (const c of cookieStore.getAll()) {
+		cookieStore.delete(c.name);
 	}
-		return Response.json({ message: "Failed to log out" });
+
+	return Response.json({ 
+		message: a.ok ? "Logged out successfully" : "Logout initiated (local session cleared)",
+		success: true 
+	});
 }
